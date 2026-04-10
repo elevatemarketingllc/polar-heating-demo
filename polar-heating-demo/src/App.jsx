@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import {
-  Phone, Menu, X, Flame, Snowflake, ChevronDown,
+  Phone, Menu, X,
   Shield, Clock, Star, Wrench, CreditCard, MapPin,
   DollarSign, CheckCircle2, CheckCircle, Loader2,
   ArrowRight, Quote, Mail, ExternalLink
@@ -82,71 +82,169 @@ function NavBar() {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 32 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay, ease: 'easeOut' },
-})
-
 function HeroSection() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '28%'])
+  const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  const textY = useTransform(scrollYProgress, [0, 0.6], ['0%', '15%'])
+
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0F2347] to-[#0A1628]" />
-      <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%23fff' stroke-width='1'/%3E%3C/svg%3E")` }} />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900/30 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-24">
-        {config.business.emergencyService && (
-          <motion.div {...fadeUp(0)} className="mb-8">
-            <span className="inline-flex items-center gap-2 bg-red-600/20 border border-red-500/30 text-red-400 text-sm font-semibold px-4 py-2 rounded-full">
-              <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-              {config.hero.emergencyText}
-            </span>
-          </motion.div>
-        )}
-        <motion.h1 {...fadeUp(0.1)} className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.05] mb-2 max-w-4xl">
-          {config.hero.headline}
-        </motion.h1>
-        <motion.h2 {...fadeUp(0.18)} className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] mb-5 max-w-4xl text-red-500">
-          {config.hero.headlineAccent}
-        </motion.h2>
-        <motion.p {...fadeUp(0.2)} className="text-lg sm:text-xl text-blue-300 max-w-2xl leading-relaxed mb-10">
-          {config.hero.subheadline}
+    <section ref={ref} className="relative h-screen min-h-[660px] overflow-hidden">
+
+      {/* Parallax background — photo + navy fallback */}
+      <motion.div style={{ y: bgY }} className="absolute inset-0 scale-110 origin-center">
+        <div
+          className="w-full h-full bg-cover bg-center"
+          style={{
+            backgroundImage: config.images && config.images.hero ? `url("${config.images.hero}")` : 'none',
+            backgroundColor: '#0A1628',
+          }}
+        />
+      </motion.div>
+
+      {/* Overlay 1 — heavy bottom anchor so text is always readable */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #0A1628 0%, rgba(10,22,40,0.75) 45%, rgba(10,22,40,0.25) 100%)' }} />
+
+      {/* Overlay 2 — left push gives text a clean lane */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.4) 55%, transparent 100%)' }} />
+
+      {/* Noise texture — adds depth */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0.04,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Diagonal line pattern — subtle brand texture */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0.025,
+          backgroundImage: 'repeating-linear-gradient(-45deg, #1B3A6B 0px, #1B3A6B 1px, transparent 1px, transparent 12px)',
+        }}
+      />
+
+      {/* Main content — bottom-left anchored */}
+      <motion.div
+        style={{ opacity: textOpacity, y: textY }}
+        className="relative z-10 h-full flex flex-col justify-end pb-20 px-6 md:px-16 max-w-7xl mx-auto w-full"
+      >
+        {/* Animated red divider line */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="w-16 h-0.5 bg-red-600 mb-6 origin-left"
+        />
+
+        {/* Eyebrow */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="text-[0.65rem] tracking-[0.35em] uppercase text-red-500 mb-5 font-medium"
+        >
+          {config.hero.eyebrow || `${config.business.city}, Idaho · Since ${config.business.founded}`}
         </motion.p>
-        <motion.div {...fadeUp(0.3)} className="flex flex-col sm:flex-row gap-4 mb-16">
-          <a href={`tel:${config.business.phoneRaw}`} className="inline-flex items-center justify-center gap-3 bg-red-600 hover:bg-red-500 active:bg-red-700 text-white text-xl font-bold px-8 py-5 rounded-2xl transition-colors shadow-2xl shadow-red-600/30">
-            <Phone className="w-6 h-6" />{config.business.phone}
+
+        {/* Headline line 1 — white, slides up from overflow hidden */}
+        <div className="overflow-hidden">
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-white leading-none"
+            style={{ fontSize: 'clamp(4.5rem, 13vw, 10rem)' }}
+          >
+            {config.hero.line1 || 'THEY JUST'}
+          </motion.div>
+        </div>
+
+        {/* Headline line 2 — red, the punch */}
+        <div className="overflow-hidden mb-2">
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-red-500 leading-none"
+            style={{ fontSize: 'clamp(4.5rem, 13vw, 10rem)' }}
+          >
+            {config.hero.line2 || 'FIXED IT.'}
+          </motion.div>
+        </div>
+
+        {/* Pull quote — the full review in small italic */}
+        <div className="overflow-hidden mb-7">
+          <motion.p
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, delay: 0.72, ease: [0.22, 1, 0.36, 1] }}
+            className="text-sm md:text-base max-w-lg leading-relaxed"
+            style={{ color: 'rgba(147,174,210,0.8)' }}
+          >
+            {config.hero.subheadline}
+          </motion.p>
+        </div>
+
+        {/* Urgency pill — sharp edges */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center gap-2 px-3 py-1.5 mb-8 self-start"
+          style={{ border: '1px solid rgba(200,16,46,0.4)' }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+          <span className="text-[0.62rem] tracking-[0.22em] uppercase text-red-400">
+            {config.hero.urgency || 'Same-Day Service Available'}
+          </span>
+        </motion.div>
+
+        {/* CTAs — sharp, no rounded-2xl */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.95, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col sm:flex-row gap-4"
+        >
+          <a
+            href={`tel:${config.business.phoneRaw}`}
+            className="inline-flex items-center justify-center gap-3 bg-red-600 hover:bg-red-500 text-white font-bold px-8 py-4 transition-all duration-200 text-base"
+            style={{ boxShadow: '0 6px 28px rgba(200,16,46,0.45)' }}
+          >
+            <Phone className="w-5 h-5" />
+            {config.business.phone}
           </a>
-          <a href="#quote" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-lg font-semibold px-8 py-5 rounded-2xl transition-colors backdrop-blur-sm">
-            Get a Free Quote <ChevronDown className="w-5 h-5" />
+          <a
+            href="#quote"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-medium transition-all duration-200 text-base"
+            style={{ border: '1px solid rgba(255,255,255,0.22)' }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(200,16,46,0.6)'; e.currentTarget.style.color = '#f87171' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.22)'; e.currentTarget.style.color = 'white' }}
+          >
+            Get a Free Estimate
           </a>
         </motion.div>
-        <motion.div {...fadeUp(0.45)} className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
-          <a href="#quote" className="group flex items-center gap-4 bg-white/5 hover:bg-red-600/15 border border-white/10 hover:border-red-500/40 rounded-2xl p-5 transition-all duration-300">
-            <div className="w-12 h-12 flex-shrink-0 bg-red-600/20 group-hover:bg-red-600/30 rounded-xl flex items-center justify-center transition-colors">
-              <Flame className="w-6 h-6 text-red-500" />
-            </div>
-            <div>
-              <p className="text-white font-bold text-base">Heating Service</p>
-              <p className="text-blue-300/70 text-sm">Furnace repair, tune-ups & replacement</p>
-            </div>
-          </a>
-          <a href="#quote" className="group flex items-center gap-4 bg-white/5 hover:bg-blue-500/15 border border-white/10 hover:border-blue-400/40 rounded-2xl p-5 transition-all duration-300">
-            <div className="w-12 h-12 flex-shrink-0 bg-blue-500/20 group-hover:bg-blue-500/30 rounded-xl flex items-center justify-center transition-colors">
-              <Snowflake className="w-6 h-6 text-blue-400" />
-            </div>
-            <div>
-              <p className="text-white font-bold text-base">Cooling Service</p>
-              <p className="text-blue-300/70 text-sm">AC repair, tune-ups & installation</p>
-            </div>
-          </a>
-        </motion.div>
-      </div>
-      <div className="absolute bottom-0 inset-x-0 pointer-events-none">
-        <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full h-16">
-          <path d="M0 72L1440 72L1440 32C1200 64 960 0 720 0C480 0 240 64 0 32L0 72Z" fill="#F4F6F9" />
-        </svg>
-      </div>
+      </motion.div>
+
+      {/* Scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 1 }}
+        className="absolute bottom-8 right-10 flex flex-col items-center gap-2.5"
+      >
+        <span className="text-[0.6rem] tracking-[0.3em] uppercase" style={{ color: 'rgba(122,142,168,0.6)' }}>Scroll</span>
+        <motion.div
+          animate={{ scaleY: [1, 0.3, 1], opacity: [1, 0.3, 1] }}
+          transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
+          className="w-px h-10 origin-top"
+          style={{ background: 'linear-gradient(to bottom, #C8102E, transparent)' }}
+        />
+      </motion.div>
     </section>
   )
 }
@@ -157,17 +255,17 @@ const TRUST_ICONS = [Shield, Clock, Star, Wrench, CreditCard, MapPin]
 
 function TrustBadges() {
   return (
-    <section className="bg-[#F4F6F9] border-b border-slate-100 py-10">
+    <section className="bg-[#0F1E35] border-b border-[#1B3A6B]/40 py-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
           {config.trustBadges.map((badge, i) => {
             const Icon = TRUST_ICONS[i % TRUST_ICONS.length]
             return (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.07, duration: 0.4 }} className="flex flex-col items-center text-center gap-2.5">
-                <div className="w-11 h-11 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-blue-700" />
+                <div className="w-11 h-11 bg-[#1B3A6B]/60 rounded-full flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-red-500" />
                 </div>
-                <p className="text-xs font-semibold text-slate-700 leading-tight">{badge}</p>
+                <p className="text-xs font-semibold text-blue-200 leading-tight">{badge}</p>
               </motion.div>
             )
           })}

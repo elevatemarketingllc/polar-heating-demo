@@ -24,12 +24,20 @@ const config = {
   },
 
   hero: {
+    eyebrow:       "Meridian, Idaho · Since 2001",
+    line1:         "THEY JUST",
+    line2:         "FIXED IT.",
     headline:      "They Didn't Try To Sell Me A New Unit.",
     headlineAccent:"They Just Fixed It.",
     subheadline:
       "Honest HVAC service for the Treasure Valley since 2001. Family-owned. Bryant authorized. Fair prices — no pressure, no upsell.",
+    urgency:       "Same-Day Service Available",
     ctaText:       "Get a Free Quote",
     emergencyText: "Same-Day Service Available",
+  },
+
+  images: {
+    hero: "",
   },
 
   services: [
