@@ -248,21 +248,6 @@ function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* Scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 1 }}
-        className="absolute bottom-8 right-10 flex flex-col items-center gap-2.5"
-      >
-        <span className="text-[0.6rem] tracking-[0.3em] uppercase" style={{ color: 'rgba(122,142,168,0.6)' }}>Scroll</span>
-        <motion.div
-          animate={{ scaleY: [1, 0.3, 1], opacity: [1, 0.3, 1] }}
-          transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
-          className="w-px h-10 origin-top"
-          style={{ background: 'linear-gradient(to bottom, #C8102E, transparent)' }}
-        />
-      </motion.div>
 
       {/* Wave transition into body */}
       <div className="absolute bottom-0 inset-x-0 pointer-events-none">
@@ -280,17 +265,17 @@ const TRUST_ICONS = [Shield, Clock, Star, Wrench, CreditCard, MapPin]
 
 function TrustBadges() {
   return (
-    <section className="bg-[#0F1E35] border-b border-[#1B3A6B]/40 py-10">
+    <section className="bg-[#F4F6F9] border-b border-slate-200 pb-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
           {config.trustBadges.map((badge, i) => {
             const Icon = TRUST_ICONS[i % TRUST_ICONS.length]
             return (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ delay: i * 0.07, duration: 0.4 }} className="flex flex-col items-center text-center gap-2.5">
-                <div className="w-11 h-11 bg-[#1B3A6B]/60 rounded-full flex items-center justify-center">
+                <div className="w-11 h-11 bg-blue-100 rounded-full flex items-center justify-center">
                   <Icon className="w-5 h-5 text-red-500" />
                 </div>
-                <p className="text-xs font-semibold text-blue-200 leading-tight">{badge}</p>
+                <p className="text-xs font-semibold text-slate-700 leading-tight">{badge}</p>
               </motion.div>
             )
           })}
@@ -526,7 +511,7 @@ function QuoteForm() {
                   </Field>
                 </div>
                 <Field label="Tell Us More (optional)" error={errors.message}><textarea {...register('message')} rows={3} placeholder="What's going on with your system? Any details help." className={`${inputClass} resize-none`} /></Field>
-                <button type="submit" disabled={isSubmitting} className="w-full flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 disabled:bg-blue-400 text-white font-bold text-base py-4 rounded-xl transition-colors shadow-md shadow-blue-700/20">
+                <button type="submit" disabled={isSubmitting} className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 disabled:bg-red-300 text-white font-bold text-base py-4 rounded-xl transition-colors shadow-md shadow-red-600/20">
                   {isSubmitting ? <><Loader2 className="w-5 h-5 animate-spin" />Sending...</> : config.hero.ctaText || 'Get My Free Quote'}
                 </button>
                 <p className="text-center text-slate-400 text-xs">No spam. No commitment. We respond within 24 hours.</p>
@@ -552,7 +537,7 @@ function ServiceAreaPills() {
           <p className="text-slate-500 text-sm mb-8">Proudly serving every corner of the Treasure Valley.</p>
           <div className="flex flex-wrap justify-center gap-2.5">
             {config.serviceArea.cities.map((city, i) => (
-              <motion.span key={i} initial={{ opacity: 0, scale: 0.85 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${city === config.business.city ? 'bg-blue-700 text-white shadow-sm shadow-blue-700/20' : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-700'}`}>
+              <motion.span key={i} initial={{ opacity: 0, scale: 0.85 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${city === config.business.city ? 'bg-red-600 text-white shadow-sm shadow-red-600/20' : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-700'}`}>
                 {city === config.business.city ? `📍 ${city}` : city}
               </motion.span>
             ))}

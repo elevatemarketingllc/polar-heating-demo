@@ -25,7 +25,7 @@ const config = {
     quoteAuthor:     "— T. Walters, Meridian",
     ctaText:         "Get a Free Quote",
     emergencyText:   "Same-Day Service Available",
-    backgroundImage: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1800&q=80",
+    backgroundImage: "https://images.unsplash.com/photo-1581094794329-c8112c4e5190?w=1800&q=80",
   },
 
   services: [
