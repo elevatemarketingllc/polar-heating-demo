@@ -97,7 +97,7 @@ function HeroSection() {
         <div
           className="w-full h-full bg-cover bg-center"
           style={{
-            backgroundImage: config.images && config.images.hero ? `url("${config.images.hero}")` : 'none',
+            backgroundImage: `url("${config.hero.backgroundImage}")`,
             backgroundColor: '#0A1628',
           }}
         />
@@ -176,7 +176,7 @@ function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Pull quote — the full review in small italic */}
+        {/* Subheadline */}
         <div className="overflow-hidden mb-7">
           <motion.p
             initial={{ y: '100%' }}
@@ -189,7 +189,7 @@ function HeroSection() {
           </motion.p>
         </div>
 
-        {/* Urgency pill — sharp edges */}
+        {/* Urgency pill */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -199,16 +199,16 @@ function HeroSection() {
         >
           <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
           <span className="text-[0.62rem] tracking-[0.22em] uppercase text-red-400">
-            {config.hero.urgency || 'Same-Day Service Available'}
+            {config.hero.emergencyText}
           </span>
         </motion.div>
 
-        {/* CTAs — sharp, no rounded-2xl */}
+        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.95, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col sm:flex-row gap-4"
+          className="flex flex-col sm:flex-row gap-4 mb-8"
         >
           <a
             href={`tel:${config.business.phoneRaw}`}
@@ -227,6 +227,24 @@ function HeroSection() {
           >
             Get a Free Estimate
           </a>
+        </motion.div>
+
+        {/* Customer quote — social proof under CTAs */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.15, duration: 0.8 }}
+          className="flex items-start gap-3 max-w-md"
+          style={{ borderLeft: '2px solid rgba(200,16,46,0.5)', paddingLeft: '1rem' }}
+        >
+          <div>
+            <p className="text-sm italic leading-relaxed" style={{ color: 'rgba(200,220,245,0.75)' }}>
+              {config.hero.quoteText}
+            </p>
+            <p className="text-[0.65rem] tracking-[0.15em] uppercase mt-1.5" style={{ color: 'rgba(147,174,210,0.5)' }}>
+              {config.hero.quoteAuthor}
+            </p>
+          </div>
         </motion.div>
       </motion.div>
 
