@@ -157,7 +157,7 @@ function HeroSection() {
             animate={{ y: 0 }}
             transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="font-display text-white leading-none"
-            style={{ fontSize: 'clamp(4.5rem, 13vw, 10rem)' }}
+            style={{ fontSize: 'clamp(2.6rem, 6.5vw, 5.5rem)' }}
           >
             {config.hero.line1 || 'THEY JUST'}
           </motion.div>
@@ -170,7 +170,7 @@ function HeroSection() {
             animate={{ y: 0 }}
             transition={{ duration: 0.9, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="font-display text-red-500 leading-none"
-            style={{ fontSize: 'clamp(4.5rem, 13vw, 10rem)' }}
+            style={{ fontSize: 'clamp(2.6rem, 6.5vw, 5.5rem)' }}
           >
             {config.hero.line2 || 'FIXED IT.'}
           </motion.div>
@@ -263,6 +263,13 @@ function HeroSection() {
           style={{ background: 'linear-gradient(to bottom, #C8102E, transparent)' }}
         />
       </motion.div>
+
+      {/* Wave transition into body */}
+      <div className="absolute bottom-0 inset-x-0 pointer-events-none">
+        <svg viewBox="0 0 1440 72" fill="none" preserveAspectRatio="none" className="w-full h-16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 72L1440 72L1440 32C1200 64 960 0 720 0C480 0 240 64 0 32L0 72Z" fill="#F4F6F9" />
+        </svg>
+      </div>
     </section>
   )
 }
