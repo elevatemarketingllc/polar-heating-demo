@@ -17,7 +17,7 @@ import config from './config'
 
 function ReviewBanner() {
   return (
-    <div style={{ backgroundColor: '#0F2347', borderBottom: '1px solid rgba(27,58,107,0.5)' }} className="fixed top-0 left-0 right-0 z-50 py-2 px-4">
+    <div style={{ backgroundColor: '#0F2347', borderBottom: '1px solid rgba(27,58,107,0.5)' }} className="fixed top-0 left-0 right-0 z-50 py-4 px-4">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
         <a href="#reviews" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <span className="text-yellow-400 text-sm tracking-tight">★★★★★</span>
@@ -25,14 +25,10 @@ function ReviewBanner() {
           <span className="text-sm" style={{ color: 'rgba(200,220,245,0.6)' }}>· 62 Google Reviews</span>
         </a>
         <a
-          href={`tel:${config.business.phoneRaw}`}
-          className="hidden sm:flex items-center gap-1.5 text-xs hover:opacity-80 transition-opacity"
-          style={{ color: 'rgba(200,220,245,0.6)' }}
+          href="#quote"
+          className="hidden sm:inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white text-xs font-semibold px-4 py-2 transition-colors duration-200"
         >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-          </svg>
-          {config.business.phone}
+          Request a Service
         </a>
       </div>
     </div>
@@ -60,7 +56,7 @@ function NavBar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      style={{ top: '36px' }}
+      style={{ top: '52px' }}
       className={`fixed inset-x-0 z-40 transition-all duration-300 ${
         scrolled ? 'bg-[#0A1628]/96 backdrop-blur-md shadow-sm border-b border-red-600/15' : 'bg-transparent'
       }`}
@@ -70,7 +66,8 @@ function NavBar() {
           <img
             src="/polar-logo.png"
             alt={config.business.name}
-            className="h-10 w-auto object-contain"
+            className="h-16 w-auto object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
           />
         </a>
         <nav className="hidden lg:flex items-center gap-6">
