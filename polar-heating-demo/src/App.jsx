@@ -17,7 +17,7 @@ import config from './config'
 
 function ReviewBanner() {
   return (
-    <div style={{ backgroundColor: '#0F2347', borderBottom: '1px solid rgba(27,58,107,0.5)' }} className="py-2 px-4">
+    <div style={{ backgroundColor: '#0F2347', borderBottom: '1px solid rgba(27,58,107,0.5)' }} className="fixed top-0 left-0 right-0 z-50 py-2 px-4">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
         <a href="#reviews" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <span className="text-yellow-400 text-sm tracking-tight">★★★★★</span>
@@ -60,7 +60,8 @@ function NavBar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+      style={{ top: '36px' }}
+      className={`fixed inset-x-0 z-40 transition-all duration-300 ${
         scrolled ? 'bg-[#0A1628]/96 backdrop-blur-md shadow-sm border-b border-red-600/15' : 'bg-transparent'
       }`}
     >
@@ -70,7 +71,6 @@ function NavBar() {
             src="/polar-logo.png"
             alt={config.business.name}
             className="h-10 w-auto object-contain"
-            style={{ filter: 'brightness(0) invert(1)' }}
           />
         </a>
         <nav className="hidden lg:flex items-center gap-6">
