@@ -13,6 +13,32 @@ import config from './config'
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
+// ─── Review Banner ────────────────────────────────────────────────────────────
+
+function ReviewBanner() {
+  return (
+    <div style={{ backgroundColor: '#0F2347', borderBottom: '1px solid rgba(27,58,107,0.5)' }} className="py-2 px-4">
+      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+        <a href="#reviews" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <span className="text-yellow-400 text-sm tracking-tight">★★★★★</span>
+          <span className="text-white text-sm font-bold">4.7</span>
+          <span className="text-sm" style={{ color: 'rgba(200,220,245,0.6)' }}>· 62 Google Reviews</span>
+        </a>
+        <a
+          href={`tel:${config.business.phoneRaw}`}
+          className="hidden sm:flex items-center gap-1.5 text-xs hover:opacity-80 transition-opacity"
+          style={{ color: 'rgba(200,220,245,0.6)' }}
+        >
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          {config.business.phone}
+        </a>
+      </div>
+    </div>
+  )
+}
+
 const NAV_LINKS = [
   { label: 'Services',     href: '#services'  },
   { label: 'Financing',    href: '#financing' },
@@ -39,12 +65,14 @@ function NavBar() {
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-        <div className="flex-shrink-0">
-          <p className="font-bold text-base sm:text-lg leading-tight text-white">{config.business.name}</p>
-          <p className={`text-xs font-medium ${scrolled ? 'text-red-400' : 'text-blue-300'}`}>
-            {config.business.city}, {config.business.state} · Licensed & Insured
-          </p>
-        </div>
+        <a href="#" className="flex-shrink-0">
+          <img
+            src="/polar-logo.png"
+            alt={config.business.name}
+            className="h-10 w-auto object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        </a>
         <nav className="hidden lg:flex items-center gap-6">
           {NAV_LINKS.slice(0, -1).map(link => (
             <a key={link.label} href={link.href} className="text-sm font-medium text-blue-200 hover:text-white transition-colors">
@@ -369,6 +397,23 @@ function FinancingBadge() {
             </div>
           </motion.div>
         </div>
+
+        {/* Bryant authorized badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-14 flex flex-col items-center gap-3"
+        >
+          <p className="text-blue-300/50 text-xs tracking-[0.2em] uppercase">Authorized Dealer</p>
+          <img
+            src="/bryant-logo.png"
+            alt="Bryant Heating & Cooling — Authorized Dealer"
+            className="h-16 w-auto object-contain opacity-80"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        </motion.div>
       </div>
     </section>
   )
@@ -610,6 +655,7 @@ export default function App() {
 
   return (
     <div className="font-sans antialiased">
+      <ReviewBanner />
       <NavBar />
       <HeroSection />
       <TrustBadges />
